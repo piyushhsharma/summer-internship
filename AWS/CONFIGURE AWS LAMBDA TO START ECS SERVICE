@@ -1,0 +1,27 @@
+def lambda_handler(event, context):
+    cluster_name = 'my-ecs-cluster'
+    task_definition_name = 'my-task-definition'
+    container_name = 'my-container'
+    image = 'your-docker-image-url'
+
+    ecs_cluster_arn = create_ecs_cluster(cluster_name)
+    task_definition_arn = create_task_definition(task_definition_name, container_name, image)
+
+    ecs_client = boto3.client('ecs')
+    response = ecs_client.run_task(
+        cluster=ecs_cluster_arn,
+        taskDefinition=task_definition_arn,
+        count=1,
+        launchType='FARGATE',
+        networkConfiguration={
+            'awsvpcConfiguration': {
+                'subnets': ['your-subnet-id'],
+                'assignPublicIp': 'ENABLED'
+            }
+        }
+    )
+    
+    return {
+        'statusCode': 200,
+        'body': 'ECS task started successfully.'
+    }
