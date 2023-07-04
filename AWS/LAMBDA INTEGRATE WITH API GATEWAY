@@ -1,0 +1,24 @@
+def lambda_handler(event, context):
+    # Extract information from the incoming API Gateway event
+    http_method = event['httpMethod']
+    request_body = event['body']
+    
+    # Perform operations based on the API request
+    if http_method == 'GET':
+        # ... handle GET request ...
+        return {
+            'statusCode': 200,
+            'body': 'GET request processed successfully.'
+        }
+    elif http_method == 'POST':
+        # ... handle POST request ...
+        return {
+            'statusCode': 200,
+            'body': 'POST request processed successfully.'
+        }
+    else:
+        # Return an error response for unsupported methods
+        return {
+            'statusCode': 400,
+            'body': 'Unsupported HTTP method.'
+        }
