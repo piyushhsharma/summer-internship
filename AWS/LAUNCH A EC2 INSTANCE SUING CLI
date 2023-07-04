@@ -1,0 +1,5 @@
+aws ec2 run-instances --image-id ami-XXXXXXXX --instance-type t2.micro --security-group-ids sg-XXXXXXXX --key-name your-key-pair-name
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" --output text
+aws ec2 create-volume --size 10 --availability-zone your-availability-zone
+aws ec2 describe-volumes --filters "Name=status,Values=available" --query "Volumes[].VolumeId" --output text
+aws ec2 attach-volume --instance-id your-instance-id --volume-id your-volume-id --device /dev/sdf
