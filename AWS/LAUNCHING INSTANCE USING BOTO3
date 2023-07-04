@@ -1,0 +1,28 @@
+import boto3
+# Create EC2 resource
+ec2 = boto3.resource('ec2')
+# Launch an EC2 instance
+instance = ec2.create_instances(
+ ImageId='ami-XXXXXXXX', # Replace with your desired AMI ID
+ InstanceType='t2.micro',
+ MinCount=1,
+ MaxCount=1,
+ SecurityGroupIds=['sg-XXXXXXXX'], # Replace with your security group ID
+ KeyName='your-key-pair-name' # Replace with your key pair name
+)[0]
+# Wait for the instance to be running
+instance.wait_until_running()
+# Create an EBS volume
+volume = ec2.create_volume(
+ AvailabilityZone='your-availability-zone', # Replace with your desired availability zone
+ Size=10 # Replace with your desired volume size in GB
+)
+# Attach the volume to the instance
+response = volume.attach_to_instance(
+ Device='/dev/sdf', # Replace with your desired device name
+ InstanceId=instance.instance_id
+)
+# Wait for the volume to be attached
+volume.wait_until_in_use()
+# Print the attachment details
+print(f"Volume {volume.volume_id} attached to instance {instance.instance_id} as {response['Device']}")
