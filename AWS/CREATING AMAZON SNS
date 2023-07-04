@@ -1,0 +1,2 @@
+aws sns create-topic - name your-topic-name
+aws sns subscribe - topic-arn your-topic-arn - protocol email - notification-endpoint your-email-address
