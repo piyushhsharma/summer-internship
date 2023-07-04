@@ -1,0 +1,26 @@
+import boto3
+
+def create_ecs_cluster(cluster_name):
+    ecs_client = boto3.client('ecs')
+    response = ecs_client.create_cluster(
+        clusterName=cluster_name
+    )
+    return response['cluster']['clusterArn']
+
+def create_task_definition(task_definition_name, container_name, image):
+    ecs_client = boto3.client('ecs')
+    response = ecs_client.register_task_definition(
+        family=task_definition_name,
+        containerDefinitions=[
+            {
+                'name': container_name,
+                'image': image,
+                'essential': True,
+                'cpu': 256,
+                'memory': 512
+                # Add other container configuration as needed
+            }
+        ],
+        networkMode='awsvpc'
+    )
+    return response['taskDefinition']['taskDefinitionArn']
